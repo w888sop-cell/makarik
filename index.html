@@ -24,8 +24,8 @@
     <section class="hero">
         <div class="container hero-grid">
             <div class="hero-image-wrapper">
-                <!-- Сюда в кавычках src можно вставить вашу постоянную ссылку на фото по умолчанию -->
-                <img id="makar-photo" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80" alt="Сапоженко Макар">
+                <!-- Фото предпринимателя установлено по умолчанию -->
+                <img id="makar-photo" src="https://s.fotora.ru/b0e7df2505a9fae5.png" alt="Сапоженко Макар">
             </div>
             <div class="hero-content">
                 <h1 id="hero-name">Сапоженко Макар Артурович</h1>
@@ -104,9 +104,10 @@
 
     <script src="script.js"></script>
 
-    <!-- Скрипт автоматического применения данных -->
+    <!-- Скрипт интеграции с админкой -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
+            // Если в админке сохранили другую ссылку, подтянем её, иначе останется фото предпринимателя
             const savedImage = localStorage.getItem('savedImage');
             const photoEl = document.getElementById('makar-photo');
             if (savedImage && photoEl) {
