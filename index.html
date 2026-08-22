@@ -3,66 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Макар Сапоженко</title>
+    <title id="page-title">Макар Сапоженко Артурович — Риэлтор в Краснодаре</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- Навигация -->
     <header class="header">
-        <div class="logo">Макар Сапоженко Артурович</div>
-        <nav class="nav">
-            <a href="index.html">Главная</a>
-            <a href="#about">О Макаре</a>
-            <a href="#contact">Записаться на просмотр</a>
-            <a href="login.html">Админ</a>
-        </nav>
+        <div class="container nav-container">
+            <div class="logo" id="nav-name">Макар Сапоженко</div>
+            <nav class="nav-links">
+                <a href="#about">О Макаре</a>
+                <a href="#booking" class="btn-nav">Записаться на просмотр</a>
+                <a href="login.html" class="btn-admin">Админ</a>
+            </nav>
+        </div>
     </header>
 
-    <main class="main-content">
-        <section class="hero">
-            <!-- Сюда подгружается фото из админки -->
-            <div class="photo-container">
-                <img id="mainPhoto" src="" alt="Макар Сапоженко" style="display: none;">
+    <!-- Первый экран -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-image-wrapper">
+                <!-- ID для загрузки фото из админки -->
+                <img id="makar-photo" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80" alt="Макар Сапоженко">
             </div>
-            
-            <h1>Макар Сапоженко Артурович</h1>
-            <p class="subtitle">Риэлтор в Краснодаре</p>
-            
-            <div class="quote-box">
-                <p>«Помогаю найти недвижимость, которая действительно подходит вам.»</p>
+            <div class="hero-content">
+                <h1 id="hero-name">Макар Сапоженко Артурович</h1>
+                <p class="subtitle" id="hero-position">Риэлтор в Краснодаре</p>
+                <blockquote class="quote" id="hero-about-short">
+                    «Помогаю найти недвижимость, которая действительно подходит вам.»
+                </blockquote>
+                <a href="#booking" class="btn primary-btn">Записаться на просмотр</a>
             </div>
+        </div>
+    </section>
 
-            <a href="#contact" class="btn-primary">Записаться на просмотр</a>
-        </section>
-
-        <section id="about" class="about-section">
+    <!-- О Макаре -->
+    <section id="about" class="about-section">
+        <div class="container">
             <h2>О Макаре</h2>
-            <p id="mainDesc">Профессиональный риэлтор, который знает рынок Краснодара, внимательно относится к клиентам и сопровождает процесс подбора недвижимости.</p>
-        </section>
-    </main>
+            <p id="about-text" class="about-desc">
+                Профессиональный риэлтор, который знает рынок Краснодара, внимательно относится к клиентам и сопровождает процесс подбора недвижимости.
+            </p>
+        </div>
+    </section>
 
-    <!-- Скрипт автоматического подтягивания данных из админки -->
+    <!-- Почему Макар -->
+    <section class="features-section">
+        <div class="container">
+            <h2>Почему Макар</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Знаю Краснодар</h3>
+                    <p>Хорошо ориентируюсь в рынке и особенностях города.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Индивидуальный подход</h3>
+                    <p>Подбираю решения под задачи и бюджет клиента.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Личный подход</h3>
+                    <p>Остаюсь на связи и сопровождаю клиента.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Форма записи -->
+    <section id="booking" class="booking-section">
+        <div class="container booking-container">
+            <h2>Запишитесь на просмотр</h2>
+            <p class="booking-subtitle">Оставьте контакты, и Макар свяжется с вами для согласования удобного времени.</p>
+            
+            <form id="booking-form" class="booking-form">
+                <input type="text" name="name" placeholder="Ваше имя" required>
+                <input type="tel" name="phone" placeholder="Телефон" required>
+                <input type="text" name="object" placeholder="Какой объект хотите посмотреть?">
+                <div class="form-row">
+                    <input type="date" name="date" required>
+                    <input type="time" name="time" required>
+                </div>
+                <button type="submit" class="btn primary-btn full-width">Записаться на просмотр</button>
+            </form>
+            <div id="form-success" class="success-msg hidden">
+                Спасибо! Заявка отправлена. Макар свяжется с вами для подтверждения времени просмотра.
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container footer-flex">
+            <p id="footer-copy">© 2026 Макар Сапоженко. Все права защищены.</p>
+            <div class="socials">
+                <a id="link-whatsapp" href="#" target="_blank">WhatsApp</a>
+                <a id="link-telegram" href="#" target="_blank">Telegram</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <!-- Скрипт интеграции с админкой -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            // Загружаем картинку
+            // Подгружаем фото из админки, если оно было загружено
             const savedImage = localStorage.getItem('savedImage');
-            const imgElement = document.getElementById('mainPhoto');
-            if (savedImage && imgElement) {
-                imgElement.src = savedImage;
-                imgElement.style.display = 'block';
+            const photoEl = document.getElementById('makar-photo');
+            if (savedImage && photoEl) {
+                photoEl.src = savedImage;
             }
 
-            // Загружаем описание (если меняли в админке)
-            const savedDesc = localStorage.getItem('savedDesc');
-            const descElement = document.getElementById('mainDesc');
-            if (savedDesc && descElement) {
-                descElement.textContent = savedDesc;
-            }
-
-            // Загружаем заголовок
+            // Подгружаем сохраненный заголовок
             const savedTitle = localStorage.getItem('savedTitle');
-            const titleElement = document.querySelector('h1');
-            if (savedTitle && titleElement) {
-                titleElement.textContent = savedTitle;
+            const nameEl = document.getElementById('hero-name');
+            if (savedTitle && nameEl) {
+                nameEl.textContent = savedTitle;
+            }
+
+            // Подгружаем сохраненное описание из админки
+            const savedDesc = localStorage.getItem('savedDesc');
+            const aboutEl = document.getElementById('about-text');
+            if (savedDesc && aboutEl) {
+                aboutEl.textContent = savedDesc;
             }
         });
     </script>
