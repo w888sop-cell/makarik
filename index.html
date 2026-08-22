@@ -7,24 +7,37 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <div class="logo">Макар Сапоженко</div>
-        <nav>
+    <header class="header">
+        <div class="logo">Макар Сапоженко Артурович</div>
+        <nav class="nav">
             <a href="index.html">Главная</a>
-            <a href="admin.html">Админ</a>
+            <a href="#about">О Макаре</a>
+            <a href="#contact">Записаться на просмотр</a>
+            <a href="login.html">Админ</a>
         </nav>
     </header>
 
-    <main style="max-width: 800px; margin: 20px auto; padding: 20px; text-align: center;">
-        
-        <!-- Блок для фотографии, которая загружается из админки -->
-        <div style="margin: 20px 0;">
-            <img id="mainPhoto" src="" alt="Фото Макара" style="max-width: 100%; max-height: 400px; display: none; border-radius: 8px; margin: 0 auto; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-        </div>
+    <main class="main-content">
+        <section class="hero">
+            <!-- Сюда подгружается фото из админки -->
+            <div class="photo-container">
+                <img id="mainPhoto" src="" alt="Макар Сапоженко" style="display: none;">
+            </div>
+            
+            <h1>Макар Сапоженко Артурович</h1>
+            <p class="subtitle">Риэлтор в Краснодаре</p>
+            
+            <div class="quote-box">
+                <p>«Помогаю найти недвижимость, которая действительно подходит вам.»</p>
+            </div>
 
-        <h1>Макар Сапоженко Артурович</h1>
-        <p id="mainDesc" style="color: #555; font-size: 18px; margin-top: 10px;"></p>
-        
+            <a href="#contact" class="btn-primary">Записаться на просмотр</a>
+        </section>
+
+        <section id="about" class="about-section">
+            <h2>О Макаре</h2>
+            <p id="mainDesc">Профессиональный риэлтор, который знает рынок Краснодара, внимательно относится к клиентам и сопровождает процесс подбора недвижимости.</p>
+        </section>
     </main>
 
     <!-- Скрипт автоматического подтягивания данных из админки -->
@@ -43,6 +56,13 @@
             const descElement = document.getElementById('mainDesc');
             if (savedDesc && descElement) {
                 descElement.textContent = savedDesc;
+            }
+
+            // Загружаем заголовок
+            const savedTitle = localStorage.getItem('savedTitle');
+            const titleElement = document.querySelector('h1');
+            if (savedTitle && titleElement) {
+                titleElement.textContent = savedTitle;
             }
         });
     </script>
