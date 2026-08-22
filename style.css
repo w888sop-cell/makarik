@@ -1,11 +1,14 @@
+/* Импортируем элитные шрифты Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap');
+
 :root {
-    --bg-color: #fcfbf9;
-    --primary-color: #1a1a1a;
-    --accent-color: #9c7c38;
-    --text-color: #333333;
-    --light-gray: #f0ede6;
-    --white: #ffffff;
-    --transition: all 0.3s ease;
+    --bg-color: #0b0b0b;
+    --card-bg: #141414;
+    --card-border: #262626;
+    --gold: #d4af37;
+    --gold-hover: #f3c653;
+    --text-main: #f5f5f5;
+    --text-muted: #a0a0a0;
 }
 
 * {
@@ -15,26 +18,33 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--text-main);
     background-color: var(--bg-color);
-    color: var(--text-color);
-    line-height: 1.6;
+    line-height: 1.7;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, .logo {
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 0.5px;
 }
 
 .container {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 25px;
 }
 
-/* Навигация */
+/* Элитная шапка сайта */
 .header {
-    padding: 20px 0;
-    border-bottom: 1px solid var(--light-gray);
-    background: var(--bg-color);
+    background: rgba(11, 11, 11, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--card-border);
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1000;
+    padding: 20px 0;
 }
 
 .nav-container {
@@ -44,126 +54,174 @@ body {
 }
 
 .logo {
-    font-weight: 600;
-    font-size: 1.1rem;
-    letter-spacing: 0.5px;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 30px;
 }
 
 .nav-links a {
     text-decoration: none;
-    color: var(--text-color);
-    font-size: 0.95rem;
-    transition: var(--transition);
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-    color: var(--accent-color);
+    color: var(--gold);
 }
 
 .btn-nav {
-    border-bottom: 1px solid var(--text-color);
+    background: transparent !important;
+    border: 1px solid var(--gold);
+    color: var(--gold) !important;
+    padding: 8px 18px;
+    border-radius: 4px;
+    transition: all 0.3s ease !important;
+}
+
+.btn-nav:hover {
+    background: var(--gold) !important;
+    color: #000 !important;
 }
 
 .btn-admin {
-    font-size: 0.8rem;
-    color: #888 !important;
+    color: #666 !important;
 }
 
-/* Главный экран */
+/* Первый экран (Hero) */
 .hero {
     padding: 80px 0;
+    background: radial-gradient(circle at top right, #1a1608 0%, #0b0b0b 60%);
 }
 
 .hero-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 50px;
+    gap: 60px;
     align-items: center;
+}
+
+.hero-image-wrapper {
+    position: relative;
+}
+
+.hero-image-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 16px;
+    z-index: -1;
+    transition: all 0.5s ease;
+}
+
+.hero-image-wrapper:hover::after {
+    inset: -5px;
+    border-color: var(--gold);
 }
 
 .hero-image-wrapper img {
     width: 100%;
-    height: 500px;
+    max-height: 520px;
     object-fit: cover;
-    border-radius: 4px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+    filter: contrast(1.05) saturate(1.05);
 }
 
 .hero-content h1 {
-    font-size: 2.5rem;
-    font-weight: 400;
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #fff;
     line-height: 1.2;
-    margin-bottom: 10px;
-    color: var(--primary-color);
 }
 
 .subtitle {
-    font-size: 1.1rem;
-    color: var(--accent-color);
+    font-size: 20px;
+    color: var(--gold);
     margin-bottom: 25px;
-    font-weight: 500;
+    font-weight: 400;
+    letter-spacing: 1px;
 }
 
 .quote {
     font-style: italic;
-    font-size: 1.15rem;
-    color: #555;
+    color: var(--text-muted);
+    border-left: 2px solid var(--gold);
+    padding-left: 20px;
     margin-bottom: 35px;
-    border-left: 2px solid var(--accent-color);
-    padding-left: 15px;
+    font-size: 17px;
 }
 
-/* Кнопки */
+/* Роскошные кнопки */
 .btn {
     display: inline-block;
-    padding: 14px 28px;
-    background-color: var(--primary-color);
-    color: var(--white);
+    padding: 14px 32px;
+    border-radius: 4px;
     text-decoration: none;
-    border-radius: 2px;
-    font-size: 0.95rem;
-    border: none;
+    font-weight: 600;
+    text-align: center;
     cursor: pointer;
-    transition: var(--transition);
+    border: none;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
 }
 
-.btn:hover {
-    background-color: var(--accent-color);
+.primary-btn {
+    background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);
+    color: #000;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+}
+
+.primary-btn:hover {
+    background: linear-gradient(135deg, #f3c653 0%, #d4af37 100%);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+    transform: translateY(-2px);
 }
 
 .full-width {
     width: 100%;
 }
 
-/* Блок О Макаре */
+/* Секция "О Макаре" */
 .about-section {
-    padding: 60px 0;
-    background-color: var(--white);
-    border-top: 1px solid var(--light-gray);
-    border-bottom: 1px solid var(--light-gray);
+    padding: 100px 0;
+    background: var(--bg-color);
+    border-top: 1px solid var(--card-border);
 }
 
 .about-section h2, .features-section h2, .booking-section h2 {
-    font-size: 2rem;
-    font-weight: 400;
-    margin-bottom: 20px;
-    color: var(--primary-color);
+    font-size: 36px;
+    margin-bottom: 25px;
+    color: #fff;
 }
 
 .about-desc {
-    font-size: 1.1rem;
-    max-width: 700px;
+    font-size: 18px;
+    color: var(--text-muted);
+    max-width: 850px;
+    line-height: 1.8;
 }
 
-/* Преимущества */
+/* Секция "Почему Макар" (Карточки) */
 .features-section {
-    padding: 80px 0;
+    padding: 100px 0;
+    background: #0f0f0f;
+    border-top: 1px solid var(--card-border);
 }
 
 .features-grid {
@@ -174,74 +232,124 @@ body {
 }
 
 .feature-card {
-    background: var(--white);
-    padding: 30px;
-    border: 1px solid var(--light-gray);
-    border-radius: 2px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    padding: 35px 30px;
+    border-radius: 12px;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: transparent;
+    transition: background 0.4s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(212, 175, 55, 0.4);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+}
+
+.feature-card:hover::before {
+    background: var(--gold);
 }
 
 .feature-card h3 {
-    font-size: 1.1rem;
-    margin-bottom: 12px;
-    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #fff;
 }
 
 .feature-card p {
-    color: #666;
-    font-size: 0.95rem;
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.6;
 }
 
-/* Форма записи */
+/* Элитная форма записи */
 .booking-section {
-    padding: 80px 0;
-    background-color: var(--white);
-    border-top: 1px solid var(--light-gray);
+    padding: 100px 0;
+    background: var(--bg-color);
+    border-top: 1px solid var(--card-border);
 }
 
 .booking-container {
-    max-width: 600px;
+    max-width: 650px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    padding: 50px;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
 }
 
 .booking-subtitle {
-    margin-bottom: 30px;
-    color: #666;
+    color: var(--text-muted);
+    margin-bottom: 35px;
+    font-size: 16px;
+}
+
+.booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .booking-form input {
-    width: 100%;
-    padding: 14px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 2px;
-    background: var(--bg-color);
-    font-size: 1rem;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    padding: 16px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    transition: border-color 0.3s ease;
+}
+
+.booking-form input:focus {
+    outline: none;
+    border-color: var(--gold);
+}
+
+.booking-form input::placeholder {
+    color: #666;
 }
 
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
+    gap: 20px;
+}
+
+.success-msg {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(46, 204, 113, 0.1);
+    color: #2ecc71;
+    border: 1px solid #2ecc71;
+    border-radius: 6px;
+    font-weight: 500;
+    text-align: center;
 }
 
 .hidden {
     display: none;
 }
 
-.success-msg {
-    padding: 20px;
-    background: #eef6ed;
-    color: #2e6930;
-    border: 1px solid #d4edda;
-    text-align: center;
-    border-radius: 2px;
-}
-
 /* Футер */
 .footer {
     padding: 40px 0;
-    border-top: 1px solid var(--light-gray);
-    font-size: 0.9rem;
-    color: #777;
+    background: #070707;
+    border-top: 1px solid var(--card-border);
+    color: #666;
+    font-size: 14px;
 }
 
 .footer-flex {
@@ -252,27 +360,41 @@ body {
 
 .socials {
     display: flex;
-    gap: 15px;
+    gap: 25px;
 }
 
 .socials a {
-    color: var(--text-color);
+    color: var(--text-muted);
     text-decoration: none;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
 }
 
-/* Адаптивность */
+.socials a:hover {
+    color: var(--gold);
+}
+
+/* Адаптивность для мобильных */
 @media (max-width: 768px) {
     .hero-grid {
         grid-template-columns: 1fr;
-        gap: 30px;
-    }
-    .hero-image-wrapper img {
-        height: 350px;
+        gap: 40px;
     }
     .features-grid {
         grid-template-columns: 1fr;
     }
     .form-row {
         grid-template-columns: 1fr;
+    }
+    .nav-links {
+        gap: 15px;
+    }
+    .booking-container {
+        padding: 30px 20px;
+    }
+    .hero-content h1 {
+        font-size: 32px;
     }
 }
