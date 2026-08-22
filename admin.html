@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css">
     
     <script>
+        // Проверка авторизации
         if (localStorage.getItem('isAdminLoggedIn') !== 'true') {
             window.location.href = 'login.html';
         }
@@ -51,6 +52,7 @@
     </div>
 
     <script>
+        // Загрузка сохраненных данных при открытии страницы
         window.onload = function() {
             if(localStorage.getItem('savedTitle')) {
                 document.getElementById('siteTitle').value = localStorage.getItem('savedTitle');
@@ -67,15 +69,17 @@
             }
         };
 
+        // Сохранение текста
         function saveContent() {
             const title = document.getElementById('siteTitle').value;
             const desc = document.getElementById('siteDesc').value;
             
             localStorage.setItem('savedTitle', title);
             localStorage.setItem('savedDesc', desc);
-            alert('Изменения сохранены!');
+            alert('Изменения успешно сохранены!');
         }
 
+        // Сохранение ссылки на фото
         function saveImage() {
             const url = document.getElementById('imageInputUrl').value.trim();
             if (url) {
@@ -83,12 +87,13 @@
                 const img = document.getElementById('previewImage');
                 img.src = url;
                 img.style.display = 'block';
-                alert('Ссылка на фото сохранена!');
+                alert('Ссылка на фото успешно сохранена!');
             } else {
                 alert('Введите ссылку на изображение!');
             }
         }
 
+        // Удаление изображения
         function deleteImage() {
             localStorage.removeItem('savedImage');
             document.getElementById('imageInputUrl').value = '';
@@ -98,6 +103,7 @@
             alert('Фото удалено!');
         }
 
+        // Выход
         function logout() {
             localStorage.removeItem('isAdminLoggedIn');
             window.location.href = 'login.html';
