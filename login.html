@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в админ-панель</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .login-wrapper {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 40px;
+            background: white;
+            border: 1px solid var(--light-gray);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <h2 style="margin-bottom: 20px; font-weight: 400;">Вход в систему</h2>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="Логин" required style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #ddd;">
+            <input type="password" id="password" placeholder="Пароль" required style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ddd;">
+            <button type="submit" class="btn primary-btn full-width">Войти</button>
+        </form>
+        <p style="margin-top: 15px; text-align: center;"><a href="index.html" style="color: #666; font-size: 0.9rem;">← На главную</a></p>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            if (res.ok) {
+                window.location.href = 'admin.html';
+            } else {
+                alert('Неверный логин или пароль');
+            }
+        });
+    </script>
+</body>
+</html>
