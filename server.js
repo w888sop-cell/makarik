@@ -8,7 +8,6 @@ const fs = require('fs');
 
 const app = express();
 
-// Использование порта, который назначает хостинг, или 3000 по умолчанию
 const PORT = process.env.PORT || 3000;
 
 // Настройка базы данных SQLite
@@ -51,17 +50,15 @@ db.serialize(() => {
         }
     });
 
-    // Инициализация базовых настроек, если пусто
+    // Инициализация базовых настроек с правильным ФИО
     const defaultSettings = {
-        name: 'Макар Сапоженко Артурович',
+        name: 'Сапоженко Макар Артурович',
         position: 'Риэлтор в Краснодаре',
         about: 'Профессиональный риэлтор, который знает рынок Краснодара, внимательно относится к клиентам и сопровождает процесс подбора недвижимости.',
         phone: '+7 (900) 000-00-00',
         whatsapp: 'https://wa.me/',
         telegram: 'https://t.me/',
-        primary_color: '#111111',
-        accent_color: '#c5a059',
-        bg_color: '#f9f9f9'
+        photo: ''
     };
 
     for (const [key, value] of Object.entries(defaultSettings)) {
@@ -69,7 +66,7 @@ db.serialize(() => {
     }
 });
 
-// Настройка Middleware
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -82,7 +79,7 @@ app.use(session({
     cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }
 }));
 
-// Конфигурация загрузки фото
+// Настройка загрузки фото
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const uploadDir = path.join(__dirname, 'uploads');
@@ -103,7 +100,6 @@ const isAuthenticated = (req, res, next) => {
 
 // --- API РОУТЫ ---
 
-// Авторизация
 app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
     db.get(`SELECT * FROM admin WHERE username = ?`, [username], async (err, user) => {
@@ -125,7 +121,6 @@ app.post('/api/logout', (req, res) => {
     });
 });
 
-// Получение публичных настроек для сайта
 app.get('/api/settings', (req, res) => {
     db.all(`SELECT * FROM settings`, [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -135,7 +130,6 @@ app.get('/api/settings', (req, res) => {
     });
 });
 
-// Сохранение настроек (админка)
 app.post('/api/settings', isAuthenticated, (req, res) => {
     const settings = req.body;
     db.serialize(() => {
@@ -148,7 +142,6 @@ app.post('/api/settings', isAuthenticated, (req, res) => {
     });
 });
 
-// Изменение логина и пароля админа
 app.post('/api/admin/credentials', isAuthenticated, async (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) return res.status(400).json({ error: 'Заполните все поля' });
@@ -174,7 +167,22 @@ app.post('/api/upload', isAuthenticated, upload.single('photo'), (req, res) => {
     });
 });
 
-// Создание заявки клиентом
+// Удаление фото
+app.delete('/api/photo', isAuthenticated, (req, res) => {
+    db.get(`SELECT value FROM settings WHERE key = 'photo'`, [], (err, row) => {
+        if (row && row.value) {
+            const filePath = path.join(__dirname, row.value);
+            if (fs.existsSync(filePath)) {
+                try { fs.unlinkSync(filePath); } catch (e) {}
+            }
+        }
+        db.run(`UPDATE settings SET value = '' WHERE key = 'photo'`, [], (err) => {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ success: true });
+        });
+    });
+});
+
 app.post('/api/leads', (req, res) => {
     const { name, phone, object, date, time } = req.body;
     if (!name || !phone) return res.status(400).json({ error: 'Укажите имя и телефон' });
@@ -187,7 +195,6 @@ app.post('/api/leads', (req, res) => {
     );
 });
 
-// Получение заявок (админка)
 app.get('/api/leads', isAuthenticated, (req, res) => {
     db.all(`SELECT * FROM leads ORDER BY created_at DESC`, [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -195,16 +202,6 @@ app.get('/api/leads', isAuthenticated, (req, res) => {
     });
 });
 
-// Изменение статуса заявки
-app.patch('/api/leads/:id', isAuthenticated, (req, res) => {
-    const { status } = req.body;
-    db.run(`UPDATE leads SET status = ? WHERE id = ?`, [status, req.params.id], (err) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ success: true });
-    });
-});
-
-// Удаление заявки
 app.delete('/api/leads/:id', isAuthenticated, (req, res) => {
     db.run(`DELETE FROM leads WHERE id = ?`, [req.params.id], (err) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -212,7 +209,6 @@ app.delete('/api/leads/:id', isAuthenticated, (req, res) => {
     });
 });
 
-// Запуск сервера с поддержкой динамического порта хостинга
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Сервер успешно запущен на порту ${PORT}`);
+    console.log(`Сервер запущен на порту ${PORT}`);
 });
