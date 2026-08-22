@@ -1,47 +1,27 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Подгрузка настроек с бэкенда при открытии сайта
-    fetch('/api/settings')
-        .then(res => res.json())
-        .then(settings => {
-            if (settings.name) {
-                document.getElementById('page-title').innerText = `${settings.name} — ${settings.position}`;
-                document.getElementById('nav-name').innerText = settings.name;
-                document.getElementById('hero-name').innerText = settings.name;
-                document.getElementById('hero-position').innerText = settings.position;
-                document.getElementById('about-text').innerText = settings.about;
-                document.getElementById('footer-copy').innerText = `© 2026 ${settings.name}. Все права защищены.`;
-            }
-            if (settings.photo) {
-                document.getElementById('makar-photo').src = settings.photo;
-            }
-            if (settings.whatsapp) document.getElementById('link-whatsapp').href = settings.whatsapp;
-            if (settings.telegram) document.getElementById('link-telegram').href = settings.telegram;
-        })
-        .catch(err => console.error('Не удалось загрузить настройки сайта', err));
+// Функция входа в админку
+function checkAdminLogin() {
+    const passwordInput = document.getElementById('password'); // ID поля ввода пароля
+    const enteredPassword = passwordInput ? passwordInput.value : '';
 
-    // Обработка отправки заявки
-    const form = document.getElementById('booking-form');
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
+    // Наш пароль
+    const correctPassword = 'prob999';
 
-        try {
-            const response = await fetch('/api/leads', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
+    if (enteredPassword === correctPassword) {
+        // Запоминаем, что мы вошли (сохраняем в памяти браузера)
+        localStorage.setItem('isAdminLoggedIn', 'true');
+        
+        // Перенаправляем на страницу админки
+        window.location.href = 'admin.html';
+    } else {
+        alert('Неправильный пароль!');
+    }
+}
 
-            if (response.ok) {
-                form.classList.add('hidden');
-                document.getElementById('form-success').classList.remove('hidden');
-            } else {
-                alert('Ошибка при отправке заявки. Пожалуйста, попробуйте еще раз.');
-            }
-        } catch (err) {
-            console.error(err);
-            alert('Ошибка соединения с сервером.');
-        }
-    });
-});
+// Проверка на странице admin.html (добавьте в самое начало файла админки)
+function protectAdminPage() {
+    const isLoggedIn = localStorage.getItem('isAdminLoggedIn');
+    if (isLoggedIn !== 'true') {
+        // Если не вошел — выгоняем обратно на страницу логина
+        window.location.href = 'login.html';
+    }
+}
