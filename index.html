@@ -24,7 +24,7 @@
     <section class="hero">
         <div class="container hero-grid">
             <div class="hero-image-wrapper">
-                <!-- ID для загрузки фото из админки -->
+                <!-- Сюда в кавычках src можно вставить вашу постоянную ссылку на фото по умолчанию -->
                 <img id="makar-photo" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80" alt="Сапоженко Макар">
             </div>
             <div class="hero-content">
@@ -104,24 +104,21 @@
 
     <script src="script.js"></script>
 
-    <!-- Скрипт интеграции с админкой -->
+    <!-- Скрипт автоматического применения данных -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            // Подгружаем фото из админки, если оно было загружено
             const savedImage = localStorage.getItem('savedImage');
             const photoEl = document.getElementById('makar-photo');
             if (savedImage && photoEl) {
                 photoEl.src = savedImage;
             }
 
-            // Подгружаем сохраненный заголовок
             const savedTitle = localStorage.getItem('savedTitle');
             const nameEl = document.getElementById('hero-name');
             if (savedTitle && nameEl) {
                 nameEl.textContent = savedTitle;
             }
 
-            // Подгружаем сохраненное описание из админки
             const savedDesc = localStorage.getItem('savedDesc');
             const aboutEl = document.getElementById('about-text');
             if (savedDesc && aboutEl) {
