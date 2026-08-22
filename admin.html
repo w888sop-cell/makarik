@@ -15,9 +15,13 @@
 </head>
 <body>
     <div class="admin-container" style="max-width: 800px; margin: 20px auto; padding: 20px; font-family: sans-serif;">
-        <header class="admin-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+        <header class="admin-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 10px; flex-wrap: wrap; gap: 10px;">
             <h1>Панель управления</h1>
-            <button onclick="logout()" style="padding: 8px 15px; background: #ff4d4d; color: white; border: none; border-radius: 4px; cursor: pointer;">Выйти</button>
+            <div style="display: flex; gap: 10px;">
+                <!-- Кнопка возврата на главную страницу -->
+                <a href="index.html" style="padding: 8px 15px; background: #607D8B; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">На главную</a>
+                <button onclick="logout()" style="padding: 8px 15px; background: #ff4d4d; color: white; border: none; border-radius: 4px; cursor: pointer;">Выйти</button>
+            </div>
         </header>
 
         <main class="admin-content" style="margin-top: 20px;">
@@ -71,10 +75,10 @@
         // Сохранение текста
         function saveContent() {
             const title = document.getElementById('siteTitle').value;
-            const desc = document.getElementById('siteDesc').value;
+            const desc = document.getElementById('siteDesc5').value || document.getElementById('siteDesc').value;
             
             localStorage.setItem('savedTitle', title);
-            localStorage.setItem('savedDesc', desc);
+            localStorage.setItem('savedDesc', document.getElementById('siteDesc').value);
             alert('Изменения успешно сохранены!');
         }
 
