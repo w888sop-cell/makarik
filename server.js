@@ -7,6 +7,8 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
+
+// Использование порта, который назначает хостинг, или 3000 по умолчанию
 const PORT = process.env.PORT || 3000;
 
 // Настройка базы данных SQLite
@@ -210,6 +212,7 @@ app.delete('/api/leads/:id', isAuthenticated, (req, res) => {
     });
 });
 
-app.listen(PORT, () => {
-    console.log(`Сервер запущен на http://localhost:${PORT}`);
+// Запуск сервера с поддержкой динамического порта хостинга
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Сервер успешно запущен на порту ${PORT}`);
 });
