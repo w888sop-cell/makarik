@@ -3,213 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Админ-панель — Макар Сапоженко</title>
+    <title>Админ-панель — макарик</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .admin-wrap { max-width: 900px; margin: 40px auto; padding: 0 20px; }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--light-gray); padding-bottom: 20px; }
-        .admin-section { background: white; padding: 25px; border: 1px solid var(--light-gray); margin-bottom: 25px; border-radius: 2px; }
-        .admin-section h3 { margin-bottom: 15px; font-weight: 500; font-size: 1.2rem; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 0.85rem; color: #666; margin-bottom: 5px; }
-        .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 2px; font-size: 0.95rem; background: var(--bg-color); }
-        .lead-item { padding: 15px; border: 1px solid var(--light-gray); margin-bottom: 10px; background: #faf8f5; }
-        .lead-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 10px; font-size: 0.9rem; }
-        .btn-danger { background: #b23b3b; color: white; padding: 6px 12px; font-size: 0.8rem; }
-        .btn-danger:hover { background: #8e2a2a; }
-        .success-banner { padding: 10px; background: #eef6ed; color: #2e6930; margin-bottom: 15px; display: none; }
-    </style>
+    
+    <!-- Защита страницы: проверяем, вошел ли администратор -->
+    <script>
+        if (localStorage.getItem('isAdminLoggedIn') !== 'true') {
+            // Если не авторизован — отправляем на страницу логина
+            window.location.href = 'login.html';
+        }
+    </script>
 </head>
 <body>
-    <div class="admin-wrap">
-        <div class="admin-header">
-            <h2>Панель управления</h2>
-            <div>
-                <a href="index.html" target="_blank" class="btn" style="padding: 8px 15px; font-size:0.85rem; margin-right: 10px;">Сайт</a>
-                <button id="logout-btn" class="btn btn-danger" style="padding: 8px 15px;">Выйти</button>
-            </div>
-        </div>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1>Панель управления Макарика</h1>
+            <button onclick="logout()" class="btn-logout">Выйти</button>
+        </header>
 
-        <div id="banner" class="success-banner">Изменения успешно сохранены!</div>
-
-        <!-- Управление информацией -->
-        <div class="admin-section">
-            <h3>Основная информация и тексты</h3>
-            <form id="settings-form">
-                <div class="form-group">
-                    <label>Имя Фамилия</label>
-                    <input type="text" id="set-name" name="name">
-                </div>
-                <div class="form-group">
-                    <label>Должность</label>
-                    <input type="text" id="set-position" name="position">
-                </div>
-                <div class="form-group">
-                    <label>Описание Макара (Блок "О Макаре")</label>
-                    <textarea id="set-about" name="about" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Телефон</label>
-                    <input type="text" id="set-phone" name="phone">
-                </div>
-                <div class="form-group">
-                    <label>Ссылка WhatsApp</label>
-                    <input type="text" id="set-whatsapp" name="whatsapp">
-                </div>
-                <div class="form-group">
-                    <label>Ссылка Telegram</label>
-                    <input type="text" id="set-telegram" name="telegram">
-                </div>
-                <button type="submit" class="btn primary-btn">Сохранить настройки</button>
-            </form>
-        </div>
-
-        <!-- Управление фото -->
-        <div class="admin-section">
-            <h3>Фотография Макара</h3>
-            <form id="photo-form">
-                <div class="form-group">
-                    <input type="file" id="photo-file" accept="image/*" required style="background:none; border:none; padding:0;">
-                </div>
-                <button type="submit" class="btn primary-btn">Загрузить новое фото</button>
-            </form>
-        </div>
-
-        <!-- Безопасность -->
-        <div class="admin-section">
-            <h3>Изменить логин и пароль</h3>
-            <form id="cred-form">
-                <div class="form-group">
-                    <label>Новый логин</label>
-                    <input type="text" id="new-username" required>
-                </div>
-                <div class="form-group">
-                    <label>Новый пароль</label>
-                    <input type="password" id="new-password" required>
-                </div>
-                <button type="submit" class="btn primary-btn">Обновить доступы</button>
-            </form>
-        </div>
-
-        <!-- Заявки -->
-        <div class="admin-section">
-            <h3>Заявки на просмотр</h3>
-            <div id="leads-container">Загрузка заявок...</div>
-        </div>
+        <main class="admin-content">
+            <p>Добро пожаловать в защищенную зону администратора!</p>
+            <!-- Сюда вы можете добавить ваши элементы управления или формы -->
+        </main>
     </div>
 
     <script>
-        // Загрузка данных в админку
-        fetch('/api/settings')
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('set-name').value = data.name || '';
-                document.getElementById('set-position').value = data.position || '';
-                document.getElementById('set-about').value = data.about || '';
-                document.getElementById('set-phone').value = data.phone || '';
-                document.getElementById('set-whatsapp').value = data.whatsapp || '';
-                document.getElementById('set-telegram').value = data.telegram || '';
-            });
-
-        // Сохранение настроек
-        document.getElementById('settings-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const body = {
-                name: document.getElementById('set-name').value,
-                position: document.getElementById('set-position').value,
-                about: document.getElementById('set-about').value,
-                phone: document.getElementById('set-phone').value,
-                whatsapp: document.getElementById('set-whatsapp').value,
-                telegram: document.getElementById('set-telegram').value,
-            };
-            const res = await fetch('/api/settings', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(body)
-            });
-            if (res.ok) showBanner();
-        });
-
-        // Загрузка фото
-        document.getElementById('photo-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const fileInput = document.getElementById('photo-file');
-            const formData = new FormData();
-            formData.append('photo', fileInput.files[0]);
-
-            const res = await fetch('/api/upload', { method: 'POST', body: formData });
-            if (res.ok) {
-                showBanner();
-                fileInput.value = '';
-            } else {
-                alert('Ошибка загрузки фото');
-            }
-        });
-
-        // Смена логина/пароля
-        document.getElementById('cred-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('new-username').value;
-            const password = document.getElementById('new-password').value;
-            const res = await fetch('/api/admin/credentials', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
-            if (res.ok) {
-                alert('Доступы успешно изменены!');
-                document.getElementById('new-username').value = '';
-                document.getElementById('new-password').value = '';
-            } else {
-                alert('Ошибка смены доступов');
-            }
-        });
-
-        // Загрузка заявок
-        async function loadLeads() {
-            const res = await fetch('/api/leads');
-            if (res.status === 401) {
-                window.location.href = 'login.html';
-                return;
-            }
-            const leads = await res.json();
-            const container = document.getElementById('leads-container');
-            if (leads.length === 0) {
-                container.innerHTML = '<p style="color:#777;">Пока нет заявок.</p>';
-                return;
-            }
-            container.innerHTML = leads.map(l => `
-                <div class="lead-item">
-                    <div class="lead-info">
-                        <div><b>Имя:</b> ${l.name}</div>
-                        <div><b>Телефон:</b> ${l.phone}</div>
-                        <div><b>Объект:</b> ${l.object || 'Не указан'}</div>
-                        <div><b>Дата:</b> ${l.date} ${l.time}</div>
-                        <div><b>Статус:</b> ${l.status}</div>
-                    </div>
-                    <button onclick="deleteLead(${l.id})" class="btn btn-danger">Удалить</button>
-                </div>
-            `).join('');
-        }
-        loadLeads();
-
-        async function deleteLead(id) {
-            if (confirm('Удалить эту заявку?')) {
-                await fetch(`/api/leads/${id}`, { method: 'DELETE' });
-                loadLeads();
-            }
-        }
-
-        // Выход
-        document.getElementById('logout-btn').addEventListener('click', async () => {
-            await fetch('/api/logout', { method: 'POST' });
+        // Функция выхода из аккаунта
+        function logout() {
+            localStorage.removeItem('isAdminLoggedIn');
             window.location.href = 'login.html';
-        });
-
-        function showBanner() {
-            const b = document.getElementById('banner');
-            b.style.display = 'block';
-            setTimeout(() => b.style.display = 'none', 3000);
         }
     </script>
 </body>
