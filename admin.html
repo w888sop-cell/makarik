@@ -6,29 +6,108 @@
     <title>Админ-панель — макарик</title>
     <link rel="stylesheet" href="style.css">
     
-    <!-- Защита страницы: проверяем, вошел ли администратор -->
     <script>
+        // Проверка авторизации
         if (localStorage.getItem('isAdminLoggedIn') !== 'true') {
-            // Если не авторизован — отправляем на страницу логина
             window.location.href = 'login.html';
         }
     </script>
 </head>
 <body>
-    <div class="admin-container">
-        <header class="admin-header">
-            <h1>Панель управления Макарика</h1>
-            <button onclick="logout()" class="btn-logout">Выйти</button>
+    <div class="admin-container" style="max-width: 800px; margin: 20px auto; padding: 20px; font-family: sans-serif;">
+        <header class="admin-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+            <h1>Панель управления</h1>
+            <button onclick="logout()" style="padding: 8px 15px; background: #ff4d4d; color: white; border: none; border-radius: 4px; cursor: pointer;">Выйти</button>
         </header>
 
-        <main class="admin-content">
-            <p>Добро пожаловать в защищенную зону администратора!</p>
-            <!-- Сюда вы можете добавить ваши элементы управления или формы -->
+        <main class="admin-content" style="margin-top: 20px;">
+            <section style="background: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <h3>Редактирование информации</h3>
+                <div style="margin-bottom: 10px;">
+                    <label>Имя / Заголовок:</label><br>
+                    <input type="text" id="siteTitle" style="width: 100%; padding: 8px; margin-top: 5px;" placeholder="Макарик">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label>Описание / О себе:</label><br>
+                    <textarea id="siteDesc" style="width: 100%; height: 80px; padding: 8px; margin-top: 5px;" placeholder="Описание сайта..."></textarea>
+                </div>
+                <button onclick="saveContent()" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Сохранить изменения</button>
+            </section>
+
+            <section style="background: #f9f9f9; padding: 15px; border-radius: 8px;">
+                <h3>Управление фотографией</h3>
+                <div style="margin-bottom: 10px;">
+                    <label>Загрузить фото (файл):</label><br>
+                    <input type="file" id="imageInput" accept="image/*" style="margin-top: 5px;">
+                </div>
+                <button onclick="uploadImage()" style="padding: 10px 20px; background: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer;">Загрузить фото</button>
+                <button onclick="deleteImage()" style="padding: 10px 20px; background: #ff9800; color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px;">Удалить фото</button>
+                
+                <div style="margin-top: 15px;">
+                    <p>Текущее фото:</p>
+                    <img id="previewImage" src="" alt="Нет фото" style="max-width: 150px; display: none; border-radius: 4px; border: 1px solid #ccc;">
+                </div>
+            </section>
         </main>
     </div>
 
     <script>
-        // Функция выхода из аккаунта
+        // Загрузка сохраненных данных при открытии страницы
+        window.onload = function() {
+            if(localStorage.getItem('savedTitle')) {
+                document.getElementById('siteTitle').value = localStorage.getItem('savedTitle');
+            }
+            if(localStorage.getItem('savedDesc')) {
+                document.getElementById('siteDesc').value = localStorage.getItem('savedDesc');
+            }
+            const savedImg = localStorage.getItem('savedImage');
+            if(savedImg) {
+                const img = document.getElementById('previewImage');
+                img.src = savedImg;
+                img.style.display = 'block';
+            }
+        };
+
+        // Сохранение текста
+        function saveContent() {
+            const title = document.getElementById('siteTitle').value;
+            const desc = document.getElementById('siteDesc').value;
+            
+            localStorage.setItem('savedTitle', title);
+            localStorage.setItem('savedDesc', desc);
+            alert('Изменения успешно сохранены!');
+        }
+
+        // Загрузка изображения через Base64
+        function uploadImage() {
+            const fileInput = document.getElementById('imageInput');
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Image = e.target.result;
+                    localStorage.setItem('savedImage', base64Image);
+                    
+                    const img = document.getElementById('previewImage');
+                    img.src = base64Image;
+                    img.style.display = 'block';
+                    alert('Фото успешно загружено!');
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                alert('Выберите файл изображения!');
+            }
+        }
+
+        // Удаление изображения
+        function deleteImage() {
+            localStorage.removeItem('savedImage');
+            const img = document.getElementById('previewImage');
+            img.src = '';
+            img.style.display = 'none';
+            alert('Фото удалено!');
+        }
+
+        // Выход
         function logout() {
             localStorage.removeItem('isAdminLoggedIn');
             window.location.href = 'login.html';
